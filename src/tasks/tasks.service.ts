@@ -5,7 +5,7 @@ import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 import { TaskRepository } from './task.repository';
 import { Task } from './task.entity';
 import { User } from '../auth/user.entity';
-// import { TASK_STATUS } from './task-status.enum';
+import { TASK_STATUS } from './task-status.enum';
 
 @Injectable()
 export class TasksService {
@@ -21,10 +21,6 @@ export class TasksService {
     const found = await this.taskRepository.findOne({
       where: { id, userId: user.id },
     });
-
-    console.log('getTaskById found', found);
-    console.log('getTaskById id', id);
-    console.log('getTaskById user id', user.id);
 
     if (!found) {
       throw new NotFoundException(`Task with ID "${id}" not found`);
@@ -45,8 +41,12 @@ export class TasksService {
     }
   }
 
-  async updateTaskStatus(id: number, status: TASK_STATUS): Promise<Task> {
-    const task = await this.getTaskById(id);
+  async updateTaskStatus(
+    id: number,
+    status: TASK_STATUS,
+    user: User,
+  ): Promise<Task> {
+    const task = await this.getTaskById(id, user);
     task.status = status;
     await task.save();
     return task;
