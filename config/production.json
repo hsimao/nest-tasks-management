@@ -1,0 +1,8 @@
+{
+  "server": {
+    "origin": "http://nest-tasks-management-frontend.s3-eu-west-1.amazonaws.com"
+  },
+  "db": {
+    "synchronize": false
+  }
+}
